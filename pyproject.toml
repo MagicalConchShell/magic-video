@@ -52,6 +52,10 @@ lint.ignore = [
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
+[tool.mypy]
+disable_error_code = ["no-untyped-def", "no-untyped-call"]
+
+
 [dependency-groups]
 dev = [
     "anyio>=4.7.0",
