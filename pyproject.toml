@@ -1,7 +1,7 @@
 [project]
 name = "magic-video"
 version = "0.0.1"
-description = "Starter template for making a new agent LangGraph."
+description = "Generates video scripts using LangGraph based on user prompts."
 authors = [
     { name = "Wang YuFei", email = "wangyufeimoon@gmail.com" },
 ]

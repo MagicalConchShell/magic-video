@@ -1,4 +1,6 @@
 import os
+import logging
+
 from langgraph.graph import MessagesState, StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -13,12 +15,18 @@ env = Environment(
 
 
 class State(MessagesState):
+    """
+    Represents the mutable state of the video graph.
+    """
     locale: str
     paragraphs_nums: int
 
 
 def script_node(state: State) -> State:
-    print("script_node message {}".format(state.get("messages")))
+    """
+    generate script node 
+    """""
+    logging.info(f"script_node messages: {state.get('messages')}")
     try:
         template = env.get_template("script.md")
     except Exception as e:
@@ -28,7 +36,6 @@ def script_node(state: State) -> State:
     messages = [{"role": "system", "content": system_prompt}] + state["messages"]
     llm = get_llm_by_type()
     response = llm.invoke(messages)
-    print(response)
     return state
 
 
