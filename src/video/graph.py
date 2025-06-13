@@ -1,10 +1,13 @@
-import os
 import logging
+import os
 
-from langgraph.graph import MessagesState, StateGraph, START, END
-from langgraph.checkpoint.memory import MemorySaver
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, START, MessagesState, StateGraph
+
 from src.llms.llm import get_llm_by_type
+
+logger = logging.getLogger(__name__)
 
 env = Environment(
     loader=FileSystemLoader(os.path.dirname(__file__)),
@@ -15,9 +18,7 @@ env = Environment(
 
 
 class State(MessagesState):
-    """
-    Represents the mutable state of the video graph.
-    """
+    """Represents the mutable state of the video graph."""
     locale: str
     paragraphs_nums: int
 
@@ -35,7 +36,7 @@ def script_node(state: State) -> State:
     system_prompt = template.render(**state)
     messages = [{"role": "system", "content": system_prompt}] + state["messages"]
     llm = get_llm_by_type()
-    response = llm.invoke(messages)
+    llm.invoke(messages)
     return state
 
 
